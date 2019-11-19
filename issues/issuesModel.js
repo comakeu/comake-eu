@@ -33,7 +33,15 @@ module.exports = {
       .from("issues as i")
       .leftJoin("votes as v", "i.id", "v.issue_id")
       .join("users as u", "i.user_id", "u.id")
-      .groupBy("i.id")
+      .groupBy(
+        "i.id",
+        "i.description",
+        "i.latitude",
+        "i.longitude",
+        "i.imgURL",
+        "u.first_name",
+        "u.last_name"
+      )
       .orderBy("votes", "desc");
   },
   getIssueById,
