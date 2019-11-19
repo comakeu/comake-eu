@@ -1,7 +1,9 @@
 const db = require("../database/dbConfig");
 
 function getIssueById(id) {
-  return db("issues").where({ id });
+  return db("issues")
+    .where({ id })
+    .first();
 }
 
 module.exports = {
@@ -39,5 +41,11 @@ module.exports = {
     return db("issues")
       .where({ id })
       .del();
+  },
+  getVotesForIssue: id => {
+    return db("votes")
+      .where({ issue_id: id })
+      .join("users", "votes.user_id", "users.id")
+      .select("users.first_name", "users.last_name");
   }
 };
