@@ -5,6 +5,7 @@ const session = require("express-session");
 const KnexSessionStore = require("connect-session-knex")(session);
 
 const authRouter = require("../auth/authRouter");
+const issuesRouter = require("../issues/issuesRouter");
 const usersRouter = require("../users/usersRouter");
 
 const sessionConfig = {
@@ -29,6 +30,7 @@ server.use(helmet());
 server.use(session(sessionConfig));
 
 server.use("/api/auth", authRouter);
+server.use("/api/issues", issuesRouter);
 server.use("/api/users", usersRouter);
 
 server.get("*", (req, res) => {
