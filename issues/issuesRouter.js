@@ -42,17 +42,34 @@ router.post("/", restricted, validateNewIssue, (req, res) => {
     });
 });
 
-router.put("/:id", restricted, validateIssue, validateUpdatedIssue, (req, res) => {
+router.put(
+  "/:id",
+  restricted,
+  validateIssue,
+  validateUpdatedIssue,
+  (req, res) => {
+    issues
+      .updateIssue(req.params.id, req.body)
+      .then(data => {
+        res.status(200).json(data);
+      })
+      .catch(error => {
+        res.status(500).json({ message: error.message });
+      });
+  }
+);
+
+router.delete("/:id", restricted, validateIssue, (req, res) => {
   issues
-    .updateIssue(req.params.id, req.body)
+    .deleteIssue(req.params.id)
     .then(data => {
-      res.status(200).json(data);
+      res
+        .status(200)
+        .json({ message: `Issue id ${req.params.id} successfully deleted.` });
     })
     .catch(error => {
       res.status(500).json({ message: error.message });
     });
 });
-
-router.delete("/:id", restricted, (req, res) => {});
 
 module.exports = router;

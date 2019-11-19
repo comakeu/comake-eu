@@ -475,9 +475,31 @@ describe("issuesRouter", () => {
         .expect(401)
         .expect({ message: "Please log in to access this resource." });
     });
+    test("does not edit existing issue when missing data", () => {
+      return request(server)
+        .put("/api/issues/7")
+        .send({})
+        .set("cookie", cookie)
+        .expect(400)
+        .expect({
+          message:
+            "Please ensure the updated issue has a new description, latitude, longitude, user_id or imgUrl"
+        });
+    });
   });
   describe("DELETE /api/issues/:id", () => {
-    test("deletes existing issue when authed", () => {});
-    test("does not delete existing issue when not authed", () => {});
+    test("deletes existing issue when authed", () => {
+      return request(server)
+        .delete("/api/issues/7")
+        .set("cookie", cookie)
+        .expect(200)
+        .expect({ message: "Issue id 7 successfully deleted." });
+    });
+    test("does not delete existing issue when not authed", () => {
+      return request(server)
+        .delete("/api/issues/6")
+        .expect(401)
+        .expect({ message: "Please log in to access this resource." });
+    });
   });
 });
