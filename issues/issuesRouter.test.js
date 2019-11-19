@@ -446,8 +446,35 @@ describe("issuesRouter", () => {
     });
   });
   describe("PUT /api/issues/:id", () => {
-    test("edits existing issue when authed", () => {});
-    test("does not edit existing issue when not authed", () => {});
+    test("edits existing issue when authed", () => {
+      return request(server)
+        .put("/api/issues/7")
+        .send({
+          latitude: "1",
+          longitude: "1"
+        })
+        .set("cookie", cookie)
+        .expect(200)
+        .expect({
+          id: 7,
+          description: "Test issue",
+          latitude: 1,
+          longitude: 1,
+          imgURL: "#",
+          first_name: "Judith",
+          last_name: "Orpen"
+        });
+    });
+    test("does not edit existing issue when not authed", () => {
+      return request(server)
+        .put("/api/issues/7")
+        .send({
+          latitude: "2",
+          longitude: "2"
+        })
+        .expect(401)
+        .expect({ message: "Please log in to access this resource." });
+    });
   });
   describe("DELETE /api/issues/:id", () => {
     test("deletes existing issue when authed", () => {});

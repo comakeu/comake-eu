@@ -29,13 +29,31 @@ function validateNewIssue(req, res, next) {
   ) {
     next();
   } else {
-    res
-      .status(400)
-      .json({
-        message:
-          "Please ensure the new issues has a description, latitude, longitude, user_id and imgUrl"
-      });
+    res.status(400).json({
+      message:
+        "Please ensure the new issues has a description, latitude, longitude, user_id and imgUrl"
+    });
   }
 }
 
-module.exports = { validateIssue, validateNewIssue };
+function validateUpdatedIssue(req, res, next) {
+  if (
+    req.body &&
+    !(
+      req.body.description ||
+      req.body.latitude ||
+      req.body.longitude ||
+      req.body.user_id ||
+      req.body.imgUrl
+    )
+  ) {
+    res.status(400).json({
+      message:
+        "Please ensure the updated issue has a new description, latitude, longitude, user_id or imgUrl"
+    });
+  } else {
+    next();
+  }
+}
+
+module.exports = { validateIssue, validateNewIssue, validateUpdatedIssue };

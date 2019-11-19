@@ -1,6 +1,10 @@
 const express = require("express");
 const { restricted } = require("../auth/authMiddleware");
-const { validateIssue, validateNewIssue } = require("./issuesMiddleware");
+const {
+  validateIssue,
+  validateNewIssue,
+  validateUpdatedIssue
+} = require("./issuesMiddleware");
 const issues = require("./issuesModel");
 
 const router = express.Router();
@@ -16,10 +20,9 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", validateIssue, async (req, res) => {
   try {
-    const data = await issues.getIssueById(req.params.id);
     const votes = await issues.getVotesForIssue(req.params.id);
     const result = {
-      ...data,
+      ...req.issue,
       votes
     };
     res.status(200).json(result);
@@ -39,7 +42,16 @@ router.post("/", restricted, validateNewIssue, (req, res) => {
     });
 });
 
-router.put("/:id", restricted, (req, res) => {});
+router.put("/:id", restricted, validateIssue, validateUpdatedIssue, (req, res) => {
+  issues
+    .updateIssue(req.params.id, req.body)
+    .then(data => {
+      res.status(200).json(data);
+    })
+    .catch(error => {
+      res.status(500).json({ message: error.message });
+    });
+});
 
 router.delete("/:id", restricted, (req, res) => {});
 
