@@ -1,8 +1,19 @@
 const db = require("../database/dbConfig");
 
 function getIssueById(id) {
-  return db("issues")
-    .where({ id })
+  return db
+    .select(
+      "i.id",
+      "i.description",
+      "i.latitude",
+      "i.longitude",
+      "i.imgURL",
+      "u.first_name",
+      "u.last_name"
+    )
+    .from("issues as i")
+    .join("users as u", "i.user_id", "u.id")
+    .where("i.id", id)
     .first();
 }
 
