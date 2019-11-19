@@ -62,7 +62,7 @@ router.put(
 router.delete("/:id", restricted, validateIssue, (req, res) => {
   issues
     .deleteIssue(req.params.id)
-    .then(data => {
+    .then(() => {
       res
         .status(200)
         .json({ message: `Issue id ${req.params.id} successfully deleted.` });
