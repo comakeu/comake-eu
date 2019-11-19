@@ -1,6 +1,6 @@
 const express = require("express");
 const { restricted } = require("../auth/authMiddleware");
-const { validateIssue } = require("./issuesMiddleware");
+const { validateIssue, validateNewIssue } = require("./issuesMiddleware");
 const issues = require("./issuesModel");
 
 const router = express.Router();
@@ -28,7 +28,16 @@ router.get("/:id", validateIssue, async (req, res) => {
   }
 });
 
-router.post("/", restricted, (req, res) => {});
+router.post("/", restricted, validateNewIssue, (req, res) => {
+  issues
+    .createIssue(req.body)
+    .then(data => {
+      res.status(201).json(data);
+    })
+    .catch(error => {
+      res.status(500).json({ message: error.message });
+    });
+});
 
 router.put("/:id", restricted, (req, res) => {});
 

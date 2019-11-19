@@ -18,4 +18,24 @@ function validateIssue(req, res, next) {
     });
 }
 
-module.exports = { validateIssue };
+function validateNewIssue(req, res, next) {
+  if (
+    req.body &&
+    req.body.description &&
+    req.body.latitude &&
+    req.body.longitude &&
+    req.body.user_id &&
+    req.body.imgUrl
+  ) {
+    next();
+  } else {
+    res
+      .status(400)
+      .json({
+        message:
+          "Please ensure the new issues has a description, latitude, longitude, user_id and imgUrl"
+      });
+  }
+}
+
+module.exports = { validateIssue, validateNewIssue };

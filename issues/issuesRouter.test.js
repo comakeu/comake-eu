@@ -393,8 +393,57 @@ describe("issuesRouter", () => {
     });
   });
   describe("POST /api/issues", () => {
-    test("creates new issue when authed", () => {});
-    test("does not create new issue when not authed", () => {});
+    test("creates new issue when authed", () => {
+      return request(server)
+        .post("/api/issues")
+        .send({
+          description: "Test issue",
+          latitude: "0",
+          longitude: "0",
+          imgUrl: "#",
+          user_id: "3"
+        })
+        .set("cookie", cookie)
+        .expect(201)
+        .expect({
+          id: 7,
+          description: "Test issue",
+          latitude: 0,
+          longitude: 0,
+          imgURL: "#",
+          first_name: "Judith",
+          last_name: "Orpen"
+        });
+    });
+    test("does not create new issue when not authed", () => {
+      return request(server)
+        .post("/api/issues")
+        .send({
+          description: "Test issue",
+          latitude: "0",
+          longitude: "0",
+          imgUrl: "#",
+          user_id: "3"
+        })
+        .expect(401)
+        .expect({ message: "Please log in to access this resource." });
+    });
+    test("does not create new issue when not missing data", () => {
+      return request(server)
+        .post("/api/issues")
+        .send({
+          description: "Test issue",
+          latitude: "0",
+          imgUrl: "#",
+          user_id: "3"
+        })
+        .set("cookie", cookie)
+        .expect(400)
+        .expect({
+          message:
+            "Please ensure the new issues has a description, latitude, longitude, user_id and imgUrl"
+        });
+    });
   });
   describe("PUT /api/issues/:id", () => {
     test("edits existing issue when authed", () => {});
