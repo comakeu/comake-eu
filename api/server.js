@@ -7,6 +7,7 @@ const KnexSessionStore = require("connect-session-knex")(session);
 const authRouter = require("../auth/authRouter");
 const issuesRouter = require("../issues/issuesRouter");
 const usersRouter = require("../users/usersRouter");
+const votesRouter = require("../votes/votesRouter");
 
 const sessionConfig = {
   name: "sessionId",
@@ -32,6 +33,7 @@ server.use(session(sessionConfig));
 server.use("/api/auth", authRouter);
 server.use("/api/issues", issuesRouter);
 server.use("/api/users", usersRouter);
+server.use("/api/votes", votesRouter);
 
 server.get("*", (req, res) => {
   res
