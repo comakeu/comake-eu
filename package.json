@@ -11,7 +11,7 @@
   "author": "Shaun Orpen",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^3.0.7",
     "connect-session-knex": "^1.5.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
