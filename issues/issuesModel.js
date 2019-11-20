@@ -50,7 +50,7 @@ module.exports = {
   getIssueById,
   createIssue: issue => {
     return db("issues")
-      .insert(issue)
+      .insert(issue, "id")
       .then(([id]) => getIssueById(id));
   },
   updateIssue: (id, issue) => {
