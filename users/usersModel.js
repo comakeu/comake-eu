@@ -1,5 +1,5 @@
 const db = require("../database/dbConfig");
-const { findByEmail,findById } = require("../database/utilityFunctions");
+const { findByEmail, findById } = require("../database/utilityFunctions");
 
 module.exports = {
   getAllUsers: () => {
@@ -7,7 +7,10 @@ module.exports = {
   },
   addUser: user => {
     return db("users")
-      .insert(user);
+      .insert(user, "id")
+      .then(([id]) => {
+        return findById(id);
+      });
   },
   updateUser: (id, newUserDetails) => {
     return db("users")
