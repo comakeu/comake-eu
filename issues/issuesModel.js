@@ -8,6 +8,7 @@ function getIssueById(id) {
       "i.latitude",
       "i.longitude",
       "i.imgURL",
+      "i.user_id",
       "u.first_name",
       "u.last_name"
     )
@@ -26,6 +27,7 @@ module.exports = {
         "i.latitude",
         "i.longitude",
         "i.imgURL",
+        "i.user_id",
         "u.first_name",
         "u.last_name"
       )
@@ -39,6 +41,7 @@ module.exports = {
         "i.latitude",
         "i.longitude",
         "i.imgURL",
+        "i.user_id",
         "u.first_name",
         "u.last_name"
       )
@@ -65,6 +68,6 @@ module.exports = {
     return db("votes")
       .where({ issue_id: id })
       .join("users", "votes.user_id", "users.id")
-      .select("users.first_name", "users.last_name");
+      .select("votes.user_id", "users.first_name", "users.last_name");
   }
 };
