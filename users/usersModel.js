@@ -7,11 +7,7 @@ module.exports = {
   },
   addUser: user => {
     return db("users")
-      .insert(user)
-      .then(ids => {
-        const [id] = ids;
-        return findById(id);
-      });
+      .insert(user);
   },
   updateUser: (id, newUserDetails) => {
     return db("users")
