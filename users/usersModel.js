@@ -8,7 +8,10 @@ module.exports = {
   addUser: user => {
     return db("users")
       .insert(user)
-      .then(([id]) => findById(id));
+      .then(ids => {
+        const [id] = ids;
+        return findById(id);
+      });
   },
   updateUser: (id, newUserDetails) => {
     return db("users")
