@@ -31,6 +31,16 @@ describe("votesRouter", () => {
         .expect(201)
         .expect({ message: "Vote successfully created!" });
     });
+    test("does not allows post new vote with invalid data when authed", () => {
+      return request(server)
+        .post("/api/votes")
+        .send({ issue_id: "2" })
+        .set("cookie", cookie)
+        .expect(400)
+        .expect({
+          message: "Please ensure the vote has both a user_id and an issue_id."
+        });
+    });
     test("does not allow post duplicate vote when authed", () => {
       return request(server)
         .post("/api/votes")
@@ -60,7 +70,32 @@ describe("votesRouter", () => {
         .post("/api/votes")
         .send({ issue_id: "2", user_id: "3" })
         .expect(401)
-        .expect({ message: 'Please log in to access this resource.' });
+        .expect({ message: "Please log in to access this resource." });
+    });
+  });
+  describe("DELETE /api/votes", () => {
+    test("allows delete of valid vote when authed", () => {
+      return request(server)
+        .delete("/api/votes")
+        .send({ issue_id: "2", user_id: "2" })
+        .set("cookie", cookie)
+        .expect(200)
+        .expect({ message: "1 vote successfully deleted" });
+    });
+    test("returns error for delete invalid vote when authed", () => {
+      return request(server)
+        .delete("/api/votes")
+        .send({ issue_id: "2", user_id: "3" })
+        .set("cookie", cookie)
+        .expect(404)
+        .expect({ message: "There is no vote with user_id 3 and issue_id 2." });
+    });
+    test("does not allow delete of valid vote when not authed", () => {
+      return request(server)
+        .delete("/api/votes")
+        .send({ issue_id: "1", user_id: "1" })
+        .expect(401)
+        .expect({ message: "Please log in to access this resource." });
     });
   });
 });

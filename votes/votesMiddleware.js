@@ -38,14 +38,31 @@ function validateIssue(req, res, next) {
     });
 }
 
-function validateVote(req, res, next) {
+function validateNewVote(req, res, next) {
   if (req.body && req.body.user_id && req.body.issue_id) {
     next();
   } else {
     res.status(400).json({
-      message: "Please ensure the new vote has both a user_id and an issue_id."
+      message: "Please ensure the vote has both a user_id and an issue_id."
     });
   }
+}
+
+function validateVote(req, res, next) {
+  votes
+    .findVote(req.body)
+    .then(data => {
+      if (data.length) {
+        next();
+      } else {
+        res.status(404).json({
+          message: `There is no vote with user_id ${req.body.user_id} and issue_id ${req.body.issue_id}.`
+        });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({ message: error.message });
+    });
 }
 
 function checkDuplicate(req, res, next) {
@@ -68,6 +85,7 @@ function checkDuplicate(req, res, next) {
 module.exports = {
   validateIssue,
   validateUser,
-  validateVote,
-  checkDuplicate
+  validateNewVote,
+  checkDuplicate,
+  validateVote
 };

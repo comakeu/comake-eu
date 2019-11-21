@@ -2,10 +2,11 @@ const express = require("express");
 const { restricted } = require("../auth/authMiddleware");
 const votes = require("./votesModel");
 const {
-  validateVote,
+  validateNewVote,
   validateIssue,
   validateUser,
-  checkDuplicate
+  checkDuplicate,
+  validateVote
 } = require("./votesMiddleware");
 
 const router = express.Router();
@@ -13,7 +14,7 @@ const router = express.Router();
 router.post(
   "/",
   restricted,
-  validateVote,
+  validateNewVote,
   validateIssue,
   validateUser,
   checkDuplicate,
@@ -28,5 +29,16 @@ router.post(
       });
   }
 );
+
+router.delete("/", restricted, validateNewVote, validateVote, (req, res) => {
+  votes
+    .deleteVote(req.body)
+    .then(data => {
+      res.status(200).json({ message: `${data} vote successfully deleted` });
+    })
+    .catch(error => {
+      res.status(500).json({ message: error.message });
+    });
+});
 
 module.exports = router;
