@@ -400,7 +400,7 @@ describe("issuesRouter", () => {
           description: "Test issue",
           latitude: "0",
           longitude: "0",
-          imgUrl: "#",
+          imgURL: "#",
           user_id: "3"
         })
         .set("cookie", cookie)
@@ -423,7 +423,7 @@ describe("issuesRouter", () => {
           description: "Test issue",
           latitude: "0",
           longitude: "0",
-          imgUrl: "#",
+          imgURL: "#",
           user_id: "3"
         })
         .expect(401)
@@ -435,14 +435,14 @@ describe("issuesRouter", () => {
         .send({
           description: "Test issue",
           latitude: "0",
-          imgUrl: "#",
+          imgURL: "#",
           user_id: "3"
         })
         .set("cookie", cookie)
         .expect(400)
         .expect({
           message:
-            "Please ensure the new issues has a description, latitude, longitude, user_id and imgUrl"
+            "Please ensure the new issues has a description, latitude, longitude, user_id and imgURL"
         });
     });
   });
@@ -485,7 +485,7 @@ describe("issuesRouter", () => {
         .expect(400)
         .expect({
           message:
-            "Please ensure the updated issue has a new description, latitude, longitude, user_id or imgUrl"
+            "Please ensure the updated issue has a new description, latitude, longitude, user_id or imgURL"
         });
     });
   });
