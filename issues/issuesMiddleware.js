@@ -44,12 +44,12 @@ function validateUpdatedIssue(req, res, next) {
       req.body.latitude ||
       req.body.longitude ||
       req.body.user_id ||
-      req.body.imgUrl
+      req.body.imgURL
     )
   ) {
     res.status(400).json({
       message:
-        "Please ensure the updated issue has a new description, latitude, longitude, user_id or imgUrl"
+        "Please ensure the updated issue has a new description, latitude, longitude, user_id or imgURL"
     });
   } else {
     next();
