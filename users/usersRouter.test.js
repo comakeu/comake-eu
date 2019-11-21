@@ -150,19 +150,6 @@ describe("usersRouter", () => {
           }
         });
     });
-    test("returns error if not authed", () => {
-      return request(server)
-        .post("/api/users")
-        .send({
-          email: "jeff@jeff.com",
-          password: "1234",
-          first_name: "Jeff",
-          last_name: "Davies",
-          phone: "+44 (0)1234 567894"
-        })
-        .expect(401)
-        .expect({ message: "Please log in to access this resource." });
-    });
     test("errors if duplicate user is created", () => {
       return request(server)
         .post("/api/users")

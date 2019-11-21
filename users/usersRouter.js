@@ -26,7 +26,7 @@ router.get("/:id", restricted, validateUser, (req, res) => {
   res.status(200).json(req.user);
 });
 
-router.post("/", restricted, validateNewUser, validateDuplicateUser, (req, res) => {
+router.post("/", validateNewUser, validateDuplicateUser, (req, res) => {
   const user = {
     ...req.body,
     password: bcrypt.hashSync(req.body.password, 11)
