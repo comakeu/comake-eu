@@ -25,13 +25,13 @@ function validateNewIssue(req, res, next) {
     req.body.latitude &&
     req.body.longitude &&
     req.body.user_id &&
-    req.body.imgUrl
+    req.body.imgURL
   ) {
     next();
   } else {
     res.status(400).json({
       message:
-        "Please ensure the new issues has a description, latitude, longitude, user_id and imgUrl"
+        "Please ensure the new issues has a description, latitude, longitude, user_id and imgURL"
     });
   }
 }
